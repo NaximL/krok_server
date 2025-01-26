@@ -138,8 +138,8 @@ bot.on('text', async (nextMsg) => {
 
 // Создание Express сервера
 const app = express();
-const PORT = 3001;
 
+const PORT = process.env.PORT || 3001;
 // Подключение CORS
 app.use(cors());
 
