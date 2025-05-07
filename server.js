@@ -8,6 +8,7 @@ const API_KEY_BOT = "8061891034:AAGXiMbTsGWcMezY7j72h1yGAvhDptb1Cgs";
 const bot = new TelegramBot(API_KEY_BOT, { webHook: true });
 
 
+const URL = process.env.APP_URL || "https://serverdf-5c9c8eec8694.herokuapp.com";
 
 
 const but1 = 'Протидія насильству 🚫';
