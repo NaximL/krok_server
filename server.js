@@ -5,9 +5,7 @@ const TelegramBot = require("node-telegram-bot-api");
 const cors = require("cors");
 
 const API_KEY_BOT = "8061891034:AAGXiMbTsGWcMezY7j72h1yGAvhDptb1Cgs";
-const bot = new TelegramBot(API_KEY_BOT, {
-    polling: true,
-});
+const bot = new TelegramBot(API_KEY_BOT, { webHook: true });
 
 
 
@@ -169,7 +167,6 @@ bot.on('location', (msg) => {
 });
 
 
-
 function askQuestions(chatId, questions, index, score) {
     if (index < questions.length) {
         bot.sendMessage(chatId, questions[index], {
@@ -200,7 +197,12 @@ app.post("/call", async (req, res) => {
     const { to, message } = req.body;
     callfw(res,to,message);
 });
+bot.setWebHook(`${URL}/bot${API_KEY_BOT}`);
 
+app.post(`/bot${API_KEY_BOT}`, (req, res) => {
+    bot.processUpdate(req.body);
+    res.sendStatus(200);
+});
 app.listen(PORT, () => {
     console.log(`Сервер запущен на http://localhost:${PORT}`);
 });
