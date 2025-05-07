@@ -1,14 +1,15 @@
 const express = require("express");
 const { VoiceResponse } = require("twilio").twiml;
-const client = require("twilio")("AC63da8572bb2de133aea49941b89056b5", "cb9bebd467d6bd9c793e80f1cc9fea97");
+const client = require("twilio")("AC983271b2f208f6d403ee0829ac8a3680", "3384eb088884bb03d57498b3e8df59a1");
 const TelegramBot = require("node-telegram-bot-api");
 const cors = require("cors");
 
-const API_KEY_BOT = "8061891034:AAGXiMbTsGWcMezY7j72h1yGAvhDptb1Cgs";
-const bot = new TelegramBot(API_KEY_BOT, { webHook: true });
+const API_KEY_BOT = "7473987432:AAEcz-47lwrx9xVuBhkmSyQe5z4mc0Uh7uI";
+const bot = new TelegramBot(API_KEY_BOT, {
+    polling: true,
+});
 
 
-const URL = process.env.APP_URL || "https://serverdf-5c9c8eec8694.herokuapp.com";
 
 
 const but1 = 'Протидія насильству 🚫';
@@ -53,7 +54,7 @@ const yes_no_answers = ["Так", "Ні"];
 
 
 const callfw= async (res,to,message) =>{
-
+    console.log("viklik !!!")
     if (!to || !message) {
         return () => {if (res) {res.status(400).json({ error: "Номер телефона та кординати обов`язкові" });}}
     }
@@ -61,7 +62,7 @@ const callfw= async (res,to,message) =>{
     try {
         await client.calls.create({
             to,
-            from: "+14067093516", 
+            from: "+17543184803", 
             twiml: `<Response>
                         <Say rate="x-slow">${message}</Say>
                     </Response>`
@@ -168,6 +169,7 @@ bot.on('location', (msg) => {
 });
 
 
+
 function askQuestions(chatId, questions, index, score) {
     if (index < questions.length) {
         bot.sendMessage(chatId, questions[index], {
@@ -193,21 +195,12 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use(cors({
-    origin: "https://krok-do-phs.vercel.app", 
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  }));
+
 app.post("/call", async (req, res) => {
     const { to, message } = req.body;
     callfw(res,to,message);
 });
-bot.setWebHook(`${URL}/bot${API_KEY_BOT}`);
 
-app.post(`/bot${API_KEY_BOT}`, (req, res) => {
-    bot.processUpdate(req.body);
-    res.sendStatus(200);
-});
 app.listen(PORT, () => {
     console.log(`Сервер запущен на http://localhost:${PORT}`);
 });
