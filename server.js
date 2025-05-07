@@ -1,6 +1,6 @@
 const express = require("express");
 const { VoiceResponse } = require("twilio").twiml;
-const client = require("twilio")("AC983271b2f208f6d403ee0829ac8a3680", "3384eb088884bb03d57498b3e8df59a1");
+const client = require("twilio")(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 const TelegramBot = require("node-telegram-bot-api");
 const cors = require("cors");
 
