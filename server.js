@@ -193,7 +193,11 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
-
+app.use(cors({
+    origin: "https://krok-do-phs.vercel.app", 
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+  }));
 app.post("/call", async (req, res) => {
     const { to, message } = req.body;
     callfw(res,to,message);
