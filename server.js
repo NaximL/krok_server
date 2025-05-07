@@ -4,7 +4,7 @@ const client = require("twilio")("AC63da8572bb2de133aea49941b89056b5", "cb9bebd4
 const TelegramBot = require("node-telegram-bot-api");
 const cors = require("cors");
 
-const API_KEY_BOT = "8061891034:AAH4mzw-2JNZKNUNJ9Plo-Bmf-mJtNZ147Q";
+const API_KEY_BOT = "8061891034:AAGXiMbTsGWcMezY7j72h1yGAvhDptb1Cgs";
 const bot = new TelegramBot(API_KEY_BOT, {
     polling: true,
 });
