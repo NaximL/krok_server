@@ -4,7 +4,7 @@ const client = require("twilio")(process.env.TWILIO_SID, process.env.TWILIO_AUTH
 const TelegramBot = require("node-telegram-bot-api");
 const cors = require("cors");
 
-const API_KEY_BOT = "7738178186:AAF-p2WLrR0413vOZeLuSAnxqixgLu2RdmM";
+const API_KEY_BOT = "8061891034:AAGXiMbTsGWcMezY7j72h1yGAvhDptb1Cgs";
 const bot = new TelegramBot(API_KEY_BOT, {
     polling: true,
 });
@@ -53,26 +53,26 @@ const yes_no_answers = ["Так", "Ні"];
 
 
 
-const callfw= async (res,to,message) =>{
+const callfw = async (res, to, message) => {
     console.log("viklik !!!")
     if (!to || !message) {
-        return () => {if (res) {res.status(400).json({ error: "Номер телефона та кординати обов`язкові" });}}
+        return () => { if (res) { res.status(400).json({ error: "Номер телефона та кординати обов`язкові" }); } }
     }
 
     try {
         await client.calls.create({
             to,
-            from: "+17543184803", 
+            from: "+17543184803",
             twiml: `<Response>
                         <Say rate="x-slow">${message}</Say>
                     </Response>`
         });
-        if (res) {res.status(200).json({ success: "Дзвінок створено" });}
+        if (res) { res.status(200).json({ success: "Дзвінок створено" }); }
     } catch (error) {
         console.error("Помилка при виклику:", error);
-        if (res) {res.status(500).json({ error: "Не вдалося викликати" });}
+        if (res) { res.status(500).json({ error: "Не вдалося викликати" }); }
     }
-    
+
 
 }
 
@@ -86,27 +86,27 @@ bot.on('text', async (nextMsg) => {
                     reply_markup: { keyboard: start_key, resize_keyboard: true }
                 });
                 break;
-            case but2: 
+            case but2:
 
-            bot.sendMessage(chatId, "Якщо ви піддаєтесь домашньому або гендерно зумовленому насильству, ви можете отримати допомогу від мобільної бригади, яка зможе надати психологічну підтримку та доставити вас до притулку, де вам зможуть допомогти психологи.");
+                bot.sendMessage(chatId, "Якщо ви піддаєтесь домашньому або гендерно зумовленому насильству, ви можете отримати допомогу від мобільної бригади, яка зможе надати психологічну підтримку та доставити вас до притулку, де вам зможуть допомогти психологи.");
 
 
-            bot.sendMessage(chatId, "Допомога автоматично викликається, якщо ви натиснете на кнопку для передачі ваших поточних координат. При натисканні цієї кнопки ваші координати автоматично відправляються, і створюється автономний виклик до оператора, який отримує ваші координати. Оператор передає інформацію вільній мобільній бригаді, що ви потребуєте допомоги. Як тільки з’являється вільна бригада, вона вирушає до вас на допомогу.");
-    
+                bot.sendMessage(chatId, "Допомога автоматично викликається, якщо ви натиснете на кнопку для передачі ваших поточних координат. При натисканні цієї кнопки ваші координати автоматично відправляються, і створюється автономний виклик до оператора, який отримує ваші координати. Оператор передає інформацію вільній мобільній бригаді, що ви потребуєте допомоги. Як тільки з’являється вільна бригада, вона вирушає до вас на допомогу.");
 
-            const key = {
-                reply_markup: {
-                    keyboard: [[{ text: "📍 Надати геопизицію", request_location: true }]],
-                    resize_keyboard: true, 
-                    one_time_keyboard: true 
-                }
-            };
-            
-            setTimeout(() => {
-                bot.sendMessage(chatId, "Запит про геопизицію:", key)
-            },100);
 
-            break;
+                const key = {
+                    reply_markup: {
+                        keyboard: [[{ text: "📍 Надати геопизицію", request_location: true }]],
+                        resize_keyboard: true,
+                        one_time_keyboard: true
+                    }
+                };
+
+                setTimeout(() => {
+                    bot.sendMessage(chatId, "Запит про геопизицію:", key)
+                }, 100);
+
+                break;
             case but1:
                 bot.sendMessage(chatId, "Оберіть:", {
                     reply_markup: { keyboard: nasl_key, resize_keyboard: true }
@@ -126,7 +126,7 @@ bot.on('text', async (nextMsg) => {
             case l_bat1:
                 askQuestions(chatId, questionsChild, 0, 0);
                 break;
-            
+
             case l_bat2:
                 askQuestions(chatId, questionsAdult, 0, 0);
                 break;
@@ -147,10 +147,10 @@ bot.on('text', async (nextMsg) => {
                 });
                 break;
 
-            default:     
-            if (yes_no_answers.includes(nextMsg.text)) {
-                break;
-            }
+            default:
+                if (yes_no_answers.includes(nextMsg.text)) {
+                    break;
+                }
                 bot.sendMessage(chatId, "Невідомий запит. Натисніть /start для меню.");
                 break;
         }
@@ -161,10 +161,10 @@ bot.on('text', async (nextMsg) => {
 
 bot.on('location', (msg) => {
     const chatId = msg.chat.id;
-    const latitude = msg.location.latitude;  
-    const longitude = msg.location.longitude;  
+    const latitude = msg.location.latitude;
+    const longitude = msg.location.longitude;
 
-    callfw('+380665190154',`Call for help at the coordinates: ${longitude} ${latitude}`);
+    callfw('+380665190154', `Call for help at the coordinates: ${longitude} ${latitude}`);
     bot.sendMessage(chatId, `Ваша геопозиція: Широта: ${latitude}, Долгота: ${longitude}`);
 });
 
@@ -198,7 +198,7 @@ app.use(express.json());
 
 app.post("/call", async (req, res) => {
     const { to, message } = req.body;
-    callfw(res,to,message);
+    callfw(res, to, message);
 });
 
 app.listen(PORT, () => {
